@@ -19,21 +19,19 @@ class Checkout extends Component {
 
     if (this.props.ingredients) {
       summary = (
-        <CheckoutSummary
-          ingredients={ this.props.ingredients }
-          checkoutCancelled={ this.checkoutCancelledHandler }
-          checkoutContinued={ this.checkoutContinuedHandler } />
+        <div>
+          <CheckoutSummary
+            ingredients={ this.props.ingredients }
+            checkoutCancelled={ this.checkoutCancelledHandler }
+            checkoutContinued={ this.checkoutContinuedHandler } />
+          <Route
+            path={ this.props.match.path + '/contact-data' }
+            component={ ContactData } />
+        </div>
       );
     }
 
-    return (
-      <div>
-        { summary }
-        <Route
-          path={ this.props.match.path + '/contact-data' }
-          component={ ContactData } />
-      </div>
-    );
+    return summary;
   }
 }
 
