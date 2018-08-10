@@ -31,7 +31,7 @@ export const auth = (email, password) => {
       returnSecureToken: true
     };
 
-    axios.post('signupNewUser?key=AIzaSyAvBmmTvnWHq3H18ANfy90Sc_iQS0NlzaU', authData)
+    axios.post('signupNewUser?key=', authData)
       .then(response => {
         console.log(response);
         dispatch(authSuccess(response.data));
