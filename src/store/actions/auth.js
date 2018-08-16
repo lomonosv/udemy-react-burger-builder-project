@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import { apiKey } from '../../api-key';
 import axios from '../../axios-auth';
 
 export const authStart = () => {
@@ -21,7 +22,7 @@ export const authFail = (error) => {
   };
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignup) => {
   return dispatch => {
     dispatch(authStart());
 
@@ -31,7 +32,9 @@ export const auth = (email, password) => {
       returnSecureToken: true
     };
 
-    axios.post('signupNewUser?key=', authData)
+    let method = (isSignup) ? 'signupNewUser' : 'verifyPassword';
+
+    axios.post(method + '?key=' + apiKey, authData)
       .then(response => {
         console.log(response);
         dispatch(authSuccess(response.data));
