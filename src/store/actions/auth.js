@@ -1,6 +1,4 @@
 import * as actionTypes from './actionTypes';
-import { apiKey } from '../../api-key';
-import axios from '../../axios-auth';
 
 export const authStart = () => {
   return {
@@ -24,9 +22,6 @@ export const authFail = (error) => {
 };
 
 export const logout = () => {
-  // localStorage.removeItem('token');
-  // localStorage.removeItem('expirationDate');
-  // localStorage.removeItem('userId');
   return {
     type: actionTypes.AUTH_INITIATE_LOGOUT
   };
@@ -46,29 +41,11 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const auth = (email, password, isSignup) => {
-  return dispatch => {
-    dispatch(authStart());
-
-    const authData = {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    };
-
-    let method = (isSignup) ? 'signupNewUser' : 'verifyPassword';
-
-    axios.post(method + '?key=' + apiKey, authData)
-      .then(response => {
-        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-        localStorage.setItem('token', response.data.idToken);
-        localStorage.setItem('expirationDate', expirationDate);
-        localStorage.setItem('userId', response.data.localId);
-        dispatch(authSuccess(response.data.idToken, response.data.localId));
-        dispatch(checkAuthTimeout(response.data.expiresIn));
-      })
-      .catch(error => {
-        dispatch(authFail(error.response.data.error));
-      });
+  return {
+    type: actionTypes.AUTH_USER,
+    email: email,
+    password: password,
+    isSignup: isSignup
   };
 };
 
